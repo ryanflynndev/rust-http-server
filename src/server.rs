@@ -18,6 +18,13 @@ impl Server {
 
         loop {
 
+            match listener.accept() {
+                Ok((stream, _)) => {
+                    println!("Ok");
+                },
+                Err(err) => println!("Failed to establish a connection: {}", err),
+            }
         }
+
     }
 }
