@@ -1,4 +1,4 @@
-use super::method::Method;
+use super::method::{Method, MethodError};
 use std::str;
 use std::str::Utf8Error;
 use std::convert::TryFrom;
@@ -32,6 +32,8 @@ impl TryFrom<&[u8]> for Request {
             return Err(ParseError::InvalidProtocol);
         }
 
+        let method: Method = method.parse()?;
+
         unimplemented!();
     }
 }
@@ -55,6 +57,12 @@ pub enum ParseError {
 impl From<Utf8Error> for ParseError {
     fn from(_: Utf8Error) -> Self {
         Self::InvalidEncoding
+    }
+}
+
+impl From<MethodError> for ParseError {
+    fn from(_: MethodError) -> Self {
+        Self::InvalidMethod
     }
 }
 
